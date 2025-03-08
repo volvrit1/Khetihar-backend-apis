@@ -1,6 +1,8 @@
 import chalk from "chalk";
 import morgan from "morgan";
 
+morgan.token("timestamp", () => chalk.gray(new Date().toISOString()));
+
 morgan.token("status", (req, res) => {
   const status = res.statusCode;
   if (status >= 500) {
@@ -15,5 +17,5 @@ morgan.token("status", (req, res) => {
 morgan.token("method", (req) => chalk.blue(req.method));
 morgan.token("url", (req) => chalk.magenta(req.originalUrl));
 
-const logFormat = ":method :url :status - :response-time ms";
+const logFormat = ":timestamp :method :url :status - :response-time ms";
 export default logFormat;

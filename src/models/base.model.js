@@ -10,8 +10,6 @@ import { Model, DataTypes, Op } from "sequelize";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 class BaseModel extends Model {
-  static excludedBranchModels = ["Branch", "City", "State", "Country", "Auth"];
-
   /**
    * Initialize the model with the given model definition and options.
    * @param {object} modelDefinition - The model definition
@@ -23,23 +21,13 @@ class BaseModel extends Model {
     this.init(
       {
         ...modifiedModelDefinition,
-        //createdBy: {
-        //  type: DataTypes.INTEGER,
-        //  allowNull: true,
-        //  filterable: true,
-        //},
-        //updatedBy: {
-        //  type: DataTypes.INTEGER,
-        //  allowNull: true,
-        //  filterable: true,
-        //},
         createdAt: {
           type: DataTypes.DATE,
-          filterable: true, // If you want createdAt to be filterable
+          filterable: true,
         },
         updatedAt: {
           type: DataTypes.DATE,
-          filterable: true, // If you want updatedAt to be filterable
+          filterable: true,
         },
       },
       {

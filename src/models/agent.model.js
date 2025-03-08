@@ -33,4 +33,4 @@ Agent.initialize({
   },
 });
 
-export default Admin;
+export default Agent;

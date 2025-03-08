@@ -8,7 +8,7 @@ class Service {
 
   static async get(id, filters = {}) {
     if (!id) {
-      return await this.Model.findAll(filters);
+      return await this.Model.find(filters);
     }
     return await this.Model.findById(id);
   }
