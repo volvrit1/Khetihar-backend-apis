@@ -214,6 +214,10 @@ class BaseModel extends Model {
         message: `${this.name} not found`,
       };
     }
+
+    const doc = await this.findById(id);
+
+    await this.saveFiles(doc);
     return updatedRecord;
   }
 

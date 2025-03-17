@@ -11,8 +11,14 @@ User.initialize({
     unique: true,
     allowNull: false,
   },
+  aadhaar: {
+    type: DataTypes.STRING(12),
+    unique: true,
+    allowNull: false,
+  },
   name: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
   district: {
     type: DataTypes.STRING,
@@ -25,9 +31,6 @@ User.initialize({
   },
   age: {
     type: DataTypes.INTEGER,
-  },
-  aadhaarNumber: {
-    type: DataTypes.STRING,
   },
   gender: {
     type: DataTypes.ENUM(User.genderArr),
