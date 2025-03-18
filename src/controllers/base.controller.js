@@ -7,24 +7,44 @@ class Controller {
   static async get(req, res, next) {
     const { id } = req.params;
     const data = await this.Service.get(id, req.query);
-    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+    sendResponse(
+      httpStatus.OK,
+      res,
+      data,
+      `${this.Service.Model.name} fetched successfully`,
+    );
   }
 
   static async create(req, res, next) {
     const data = await this.Service.create(req.body);
-    sendResponse(httpStatus.CREATED, res, data, "Record created successfully");
+    sendResponse(
+      httpStatus.CREATED,
+      res,
+      data,
+      `${this.Service.Model.name} created successfully`,
+    );
   }
 
   static async update(req, res, next) {
     const { id } = req.params;
     const data = await this.Service.update(id, req.body);
-    sendResponse(httpStatus.OK, res, data, "Record updated successfully");
+    sendResponse(
+      httpStatus.OK,
+      res,
+      data,
+      `${this.Service.Model.name} updated successfully`,
+    );
   }
 
   static async deleteDoc(req, res, next) {
     const { id } = req.params;
     const data = await this.Service.deleteDoc(id);
-    sendResponse(httpStatus.OK, res, data, "Record deleted successfully");
+    sendResponse(
+      httpStatus.OK,
+      res,
+      data,
+      `${this.Service.Model.name} deleted successfully`,
+    );
   }
 }
 
