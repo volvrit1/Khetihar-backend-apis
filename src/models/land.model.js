@@ -21,6 +21,14 @@ Land.initialize({
     type: DataTypes.STRING(1000),
     allowNull: false,
   },
+  pinCode: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  measuringUnit: {
+    type: DataTypes.ENUM("Bigah", "Biswa"),
+    allowNull: false,
+  },
   khasraNumber: {
     type: DataTypes.STRING,
   },
