@@ -21,6 +21,14 @@ Equipment.initialize({
     type: DataTypes.STRING,
     allowNull: false,
   },
+  image: {
+    type: DataTypes.STRING(500),
+    file: true,
+  },
+  cost: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 export default Equipment;

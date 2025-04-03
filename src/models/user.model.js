@@ -47,6 +47,10 @@ User.initialize({
   egannaId: {
     type: DataTypes.STRING,
   },
+  profile: {
+    type: DataTypes.STRING,
+    file: true,
+  },
 });
 
 export default User;
