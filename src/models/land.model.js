@@ -40,11 +40,11 @@ Land.initialize({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  yLeftCoOrdinate: {
+  yTopCoOrdinate: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  yRightCoOrdinate: {
+  yBotttomCoOrdinate: {
     type: DataTypes.STRING,
     allowNull: false,
   },
