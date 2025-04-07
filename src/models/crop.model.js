@@ -13,6 +13,10 @@ Crop.initialize({
     type: DataTypes.STRING(500),
     allowNull: false,
   },
+  active: {
+    type: DataTypes.BOOLEAN,
+    default: false,
+  },
 });
 
 export default Crop;
