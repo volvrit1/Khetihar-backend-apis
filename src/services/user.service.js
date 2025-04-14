@@ -19,14 +19,25 @@ class UserService extends Service {
   static async login(otpData) {
     const { mobile, otp } = otpData;
 
-    const user = await this.Model.findDoc({
+    let user = await this.Model.findDoc({
       mobile,
     });
 
-    const savedOtp = await OtpService.getDoc({
-      mobile,
-      type: "User",
-    });
+    const savedOtp = await OtpService.getDoc(
+      {
+        mobile,
+        type: "User",
+      },
+      true,
+    );
+
+    if (!savedOtp) {
+      throw {
+        status: false,
+        message: "Invalid Otp, please get a new otp",
+        httpStatus: httpStatus.UNAUTHORIZED,
+      };
+    }
 
     if (otp !== savedOtp.otp) {
       throw {
@@ -46,12 +57,10 @@ class UserService extends Service {
 
     const token = createToken(payload);
 
-    const data = {
-      user,
-      token,
-    };
+    user = user.toJSON();
+    user.token = token;
 
-    return data;
+    return user;
   }
 
   static async sendOtp(loginData) {

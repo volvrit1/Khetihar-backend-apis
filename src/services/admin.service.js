@@ -31,7 +31,8 @@ class AdminService extends Service {
     }
 
     const payload = {
-      ...admin.toJSON(),
+      id: admin.id,
+      email,
     };
 
     delete payload.password;

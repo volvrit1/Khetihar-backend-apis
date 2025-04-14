@@ -26,7 +26,7 @@ server.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 server.use(multer().any());
 server.use(express.json());
 server.use(sessionMiddleware);
-// server.use(parser);
+server.use(parser);
 server.use("/api", routeMapper);
 server.use(globalErrorHandler);
 

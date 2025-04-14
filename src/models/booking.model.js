@@ -29,7 +29,7 @@ Booking.initialize({
     type: DataTypes.INTEGER,
   },
   bookingDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   equipmentId: {
@@ -46,6 +46,9 @@ Booking.initialize({
       model: Cart,
       key: Cart.primaryKeyAttribute,
     },
+  },
+  slot: {
+    type: DataTypes.TEXT,
   },
 });
 

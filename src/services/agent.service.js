@@ -11,7 +11,7 @@ class AgentService extends Service {
   static async login(otpData) {
     const { mobile, otp } = otpData;
 
-    const agent = await this.Model.findDoc({
+    let agent = await this.Model.findDoc({
       mobile,
     });
 
@@ -46,12 +46,10 @@ class AgentService extends Service {
 
     const token = createToken(payload);
 
-    const data = {
-      agent,
-      token,
-    };
+    agent = agent.toJSON();
+    agent.token = token;
 
-    return data;
+    return agent;
   }
 
   static async sendOtp(loginData) {

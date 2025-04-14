@@ -12,7 +12,6 @@ const sessionMiddleware = (req, _res, next) => {
       session.set("transaction", transactionSession);
     }
     session.set("files", req.files ?? null);
-    session.set("userId", req.params.id);
     next();
   });
 };

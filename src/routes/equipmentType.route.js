@@ -10,7 +10,13 @@ router
   .post(
     asyncHandler(EquipmentTypeController.create.bind(EquipmentTypeController)),
   )
-  .put(EquipmentTypeController.update.bind(EquipmentTypeController))
-  .delete(EquipmentTypeController.deleteDoc.bind(EquipmentTypeController));
+  .put(
+    asyncHandler(EquipmentTypeController.update.bind(EquipmentTypeController)),
+  )
+  .delete(
+    asyncHandler(
+      EquipmentTypeController.deleteDoc.bind(EquipmentTypeController),
+    ),
+  );
 
 export default router;

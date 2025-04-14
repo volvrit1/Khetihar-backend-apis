@@ -20,7 +20,21 @@ import { session } from "#middlewares/session";
 export const globalErrorHandler = async (error, req, res, next) => {
   const transaction = await session.get("transaction");
   transaction ? await transaction.rollback() : null;
-  console.log(error);
+
+  if (
+    error.name === "SequelizeForeignKeyConstraintError" &&
+    error.parent?.code === "ER_ROW_IS_REFERENCED_2"
+  ) {
+    return res.status(409).json({
+      status: false,
+      message: `Cannot delete or update this record because it is still referenced in the '${error.table}' table.`,
+      errors: {
+        table: error.table || "Unknown",
+        relatedField: error.fields?.[0] || "Unknown",
+        constraint: error.index || "Unknown",
+      },
+    });
+  }
 
   if (error instanceof ValidationError) {
     const errors = error.errors.map((err) => {

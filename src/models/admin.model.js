@@ -13,6 +13,10 @@ Admin.initialize({
     type: DataTypes.STRING,
     required: true,
   },
+  name: {
+    type: DataTypes.STRING,
+    required: true,
+  },
 });
 
 export default Admin;

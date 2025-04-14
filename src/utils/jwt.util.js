@@ -20,7 +20,7 @@ export const generaterandompassword = (length = 12) => {
   return password;
 };
 
-export const verifytoken = (token, secret = env.JWT_SECRET) => {
+export const verifyToken = (token, secret = env.JWT_SECRET) => {
   try {
     const payload = jwt.verify(token, secret);
     return payload;

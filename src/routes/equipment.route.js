@@ -8,7 +8,9 @@ router
   .route("/:id?")
   .get(asyncHandler(EquipmentController.get.bind(EquipmentController)))
   .post(asyncHandler(EquipmentController.create.bind(EquipmentController)))
-  .put(EquipmentController.update.bind(EquipmentController))
-  .delete(EquipmentController.deleteDoc.bind(EquipmentController));
+  .put(asyncHandler(EquipmentController.update.bind(EquipmentController)))
+  .delete(
+    asyncHandler(EquipmentController.deleteDoc.bind(EquipmentController)),
+  );
 
 export default router;
