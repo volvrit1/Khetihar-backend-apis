@@ -11,6 +11,7 @@ const env = cleanEnv(process.env, {
   DB_HOST: str({ default: "localhost" }),
   DB_DIALECT: str({ default: "mysql" }),
   NODE_ENV: str(),
+  JWT_SECRET: str(),
 });
 
 export default env;

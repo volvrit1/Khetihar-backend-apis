@@ -7,6 +7,14 @@ import UserController from "#controllers/user";
 const router = express.Router();
 
 router
+  .route("/login")
+  .post(asyncHandler(UserController.login.bind(UserController)));
+
+router
+  .route("/send-otp")
+  .post(asyncHandler(UserController.sendOtp.bind(UserController)));
+
+router
   .route("/:id?")
   .get(asyncHandler(UserController.get.bind(UserController)))
   .post(

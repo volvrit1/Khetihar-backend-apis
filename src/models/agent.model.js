@@ -12,10 +12,6 @@ Agent.initialize({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   aadhaarNumber: {
     type: DataTypes.STRING,
   },

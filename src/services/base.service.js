@@ -13,6 +13,11 @@ class Service {
     return await this.Model.findById(id);
   }
 
+  static async getDoc(filters, allowNull = false) {
+    const data = await this.Model.findDoc(filters, allowNull);
+    return data;
+  }
+
   static async getWithQuery(query) {
     const data = await this.Model.sequelize.query(query);
     return data;

@@ -18,19 +18,19 @@ import { session } from "#middlewares/session";
  * @return {Object} - The response object with appropriate error handling
  */
 export const globalErrorHandler = async (error, req, res, next) => {
-  console.error("Error:", error);
-
   const transaction = await session.get("transaction");
   transaction ? await transaction.rollback() : null;
+  console.log(error);
 
   if (error instanceof ValidationError) {
+    const errors = error.errors.map((err) => {
+      const message = err.message;
+      return message;
+    });
+
     return res.status(400).json({
       status: false,
-      message: "Validation Error",
-      errors: error.errors.map((err) => ({
-        field: err.path,
-        message: err.message,
-      })),
+      message: errors.join(", "),
     });
   }
 

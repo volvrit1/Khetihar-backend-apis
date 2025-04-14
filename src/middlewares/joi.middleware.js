@@ -43,7 +43,7 @@ export default function validateModel(model, isUpdate = false) {
       if (error) {
         return res.status(400).json({
           error: "Validation failed",
-          details: error.details.map((detail) => detail.message),
+          message: error.details.map((detail) => detail.message),
         });
       }
 

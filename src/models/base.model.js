@@ -58,6 +58,20 @@ class BaseModel extends Model {
     }, {});
   }
 
+  static async findDoc(filters, allowNull = false) {
+    const data = await this.findOne(filters);
+
+    if (allowNull || data) {
+      return data;
+    }
+
+    throw {
+      status: false,
+      message: `${this.name} not found`,
+      httpStatus: httpStatus.BAD_REQUEST,
+    };
+  }
+
   static async find(filters) {
     const {
       search = "",

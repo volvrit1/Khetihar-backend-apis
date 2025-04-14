@@ -1,32 +1,32 @@
 import Service from "#services/base";
-import User from "#models/user";
+import Agent from "#models/agent";
 import CartService from "#services/cart";
 import OtpService from "#services/otp";
 import { createToken } from "#utils/jwt";
 import httpStatus from "http-status";
 
-class UserService extends Service {
-  static Model = User;
-
-  static async create(userData) {
-    const user = await super.create(userData);
-    const { id: userId } = user;
-
-    await CartService.create({ userId });
-    return user;
-  }
+class AgentService extends Service {
+  static Model = Agent;
 
   static async login(otpData) {
     const { mobile, otp } = otpData;
 
-    const user = await this.Model.findDoc({
+    const agent = await this.Model.findDoc({
       mobile,
     });
 
     const savedOtp = await OtpService.getDoc({
       mobile,
-      type: "User",
+      type: "Agent",
     });
+
+    if (!savedOtp) {
+      throw {
+        status: false,
+        message: "Invalid Otp, please get a new otp",
+        httpStatus: httpStatus.UNAUTHORIZED,
+      };
+    }
 
     if (otp !== savedOtp.otp) {
       throw {
@@ -39,7 +39,7 @@ class UserService extends Service {
     await savedOtp.destroy({ force: true });
 
     const payload = {
-      ...user.toJSON(),
+      ...agent.toJSON(),
     };
 
     delete payload.password;
@@ -47,7 +47,7 @@ class UserService extends Service {
     const token = createToken(payload);
 
     const data = {
-      user,
+      agent,
       token,
     };
 
@@ -57,14 +57,14 @@ class UserService extends Service {
   static async sendOtp(loginData) {
     const { mobile } = loginData;
 
-    const user = await this.getDoc({
+    const agent = await this.getDoc({
       mobile,
     });
 
     let otp = await OtpService.getDoc(
       {
         mobile,
-        type: "User",
+        type: "Agent",
       },
       true,
     );
@@ -72,7 +72,7 @@ class UserService extends Service {
     if (!otp) {
       otp = await OtpService.create({
         mobile,
-        type: "User",
+        type: "Agent",
         otp: Math.floor(1000 + Math.random() * 9000),
       });
     }
@@ -80,4 +80,4 @@ class UserService extends Service {
   }
 }
 
-export default UserService;
+export default AgentService;

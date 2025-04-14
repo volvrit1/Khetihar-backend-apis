@@ -1,3 +1,4 @@
+import cors from "cors";
 import multer from "multer";
 import morgan from "morgan";
 import path from "node:path";
@@ -20,11 +21,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const server = express();
 
 server.use(morgan(logger));
+server.use(cors());
 server.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 server.use(multer().any());
 server.use(express.json());
 server.use(sessionMiddleware);
-server.use(parser);
+// server.use(parser);
 server.use("/api", routeMapper);
 server.use(globalErrorHandler);
 

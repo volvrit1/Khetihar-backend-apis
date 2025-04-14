@@ -11,7 +11,7 @@ Crop.initialize({
   },
   image: {
     type: DataTypes.STRING(500),
-    allowNull: false,
+    file: true,
   },
   active: {
     type: DataTypes.BOOLEAN,

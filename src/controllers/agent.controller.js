@@ -1,15 +1,15 @@
 import httpStatus from "http-status";
-import UserService from "#services/user";
+import AgentService from "#services/agent";
 import Controller from "#controllers/base";
 import { session } from "#middlewares/session";
 import { sendResponse } from "#utils/response";
 
-class UserController extends Controller {
-  static Service = UserService;
+class AgentController extends Controller {
+  static Service = AgentService;
 
-  static async getLoggedInUser(req, res, next) {
-    const loggedInUserId = session.get("userId");
-    const data = await this.Service.get(loggedInUserId);
+  static async getLoggedInAgent(req, res, next) {
+    const loggedInAgentId = session.get("agentId");
+    const data = await this.Service.get(loggedInAgentId);
     sendResponse(httpStatus.OK, res, data, "Record fetched succesfully");
   }
 
@@ -24,4 +24,4 @@ class UserController extends Controller {
   }
 }
 
-export default UserController;
+export default AgentController;

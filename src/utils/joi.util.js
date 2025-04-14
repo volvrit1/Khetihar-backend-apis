@@ -51,5 +51,5 @@ export default function sequelizeToJoi(attribute) {
   // Handle nullability
   return attribute.allowNull === false
     ? joiSchema.required()
-    : joiSchema.allow(null).optional();
+    : joiSchema.allow(null, "").optional();
 }
