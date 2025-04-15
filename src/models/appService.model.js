@@ -1,21 +1,22 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
+import { saveFile } from "#utils/uploadFile";
 
-class AppService extends BaseModel {}
-
-AppService.initialize({
+const appServiceSchema = new BaseSchema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
   },
   image: {
-    type: DataTypes.STRING,
+    type: String,
     file: true,
   },
   description: {
-    type: DataTypes.STRING,
+    type: String,
   },
 });
 
-export default AppService;
+appServiceSchema.pre("save", saveFile);
+
+export default mongoose.model("AppService", appServiceSchema);

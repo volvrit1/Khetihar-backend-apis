@@ -1,109 +1,70 @@
-import env from "#configs/env";
-import {
-  ValidationError,
-  UniqueConstraintError,
-  DatabaseError,
-  ConnectionError,
-  ForeignKeyConstraintError,
-} from "sequelize";
-import { session } from "#middlewares/session";
+import mongoose from "mongoose";
+import { session, transactionMethods } from "#middlewares/session";
 
-/**
- * Global error handler function that logs errors and handles different types of Sequelize errors.
- *
- * @param {Error} error - The error object to be handled
- * @param {Object} req - The request object
- * @param {Object} res - The response object
- * @param {Function} next - The next middleware function
- * @return {Object} - The response object with appropriate error handling
- */
-export const globalErrorHandler = async (error, req, res, next) => {
-  const transaction = await session.get("transaction");
-  transaction ? await transaction.rollback() : null;
+export default async function globalErrorHandler(err, req, res, next) {
+  let statusCode = err.httpStatus ?? 500;
+  let message = err.message;
 
-  if (
-    error.name === "SequelizeForeignKeyConstraintError" &&
-    error.parent?.code === "ER_ROW_IS_REFERENCED_2"
-  ) {
-    return res.status(409).json({
-      status: false,
-      message: `Cannot delete or update this record because it is still referenced in the '${error.table}' table.`,
-      errors: {
-        table: error.table || "Unknown",
-        relatedField: error.fields?.[0] || "Unknown",
-        constraint: error.index || "Unknown",
-      },
-    });
+  // TODO: transaction has to implemented here
+  /**if (transactionMethods.includes(req.method)) {
+    const transactionSession = session.get("transaction");
+    await transactionSession.abortTransaction();
+  }*/
+
+  if (err instanceof mongoose.Error) {
+    switch (true) {
+      case err instanceof mongoose.Error.ValidationError:
+        statusCode = 400;
+        message = Object.values(err.errors).map((error) => error.message);
+        break;
+
+      case err instanceof mongoose.Error.CastError:
+        statusCode = 400;
+        message = `Invalid ${err.path}: ${err.value}`;
+        break;
+
+      case err instanceof mongoose.Error.MongooseServerSelectionError:
+        statusCode = 503;
+        message = "Database connection error. Please try again later.";
+        break;
+
+      case err instanceof mongoose.Error.DocumentNotFoundError:
+        statusCode = 404;
+        message = "Document not found.";
+        break;
+
+      case err instanceof mongoose.Error.StrictModeError:
+        statusCode = 400;
+        message = "Attempted to save a field not defined in the schema.";
+        break;
+
+      default:
+        statusCode = 500;
+        message = "An unexpected database error occurred.";
+    }
   }
 
-  if (error instanceof ValidationError) {
-    const errors = error.errors.map((err) => {
-      const message = err.message;
-      return message;
-    });
-
-    return res.status(400).json({
-      status: false,
-      message: errors.join(", "),
-    });
+  if (err instanceof SyntaxError && err.status === 400) {
+    statusCode = 400;
+    message = "Invalid JSON syntax.";
   }
 
-  // Handle foreign key errors
-  if (error instanceof ForeignKeyConstraintError) {
-    return res.status(400).json({
-      status: false,
-      message: "Foreign Key Constraint Error",
-      errors: {
-        fields: error.fields[0],
-        message: `${error.fields[0]} is invalid or doesn't exist`,
-      },
-    });
+  if (err.code === 11000) {
+    statusCode = 409;
+    message = "";
+    for (let i in err.keyPattern) {
+      message += `${i} with value '${err.keyValue[i]}' already exists`;
+    }
   }
 
-  // Handle unique constraint errors
-  if (error instanceof UniqueConstraintError) {
-    return res.status(409).json({
-      status: false,
-      message: "Email already exists",
-      errors: error.errors.map((err) => ({
-        field: err.path,
-        message: err.message,
-      })),
-    });
+  // Fallback for any other uncaught errors
+  if (!statusCode || !message) {
+    statusCode = 500;
+    message = "An unexpected error occurred.";
   }
 
-  // Handle other Sequelize errors
-  if (error instanceof DatabaseError) {
-    return res.status(500).json({
-      status: false,
-      message: "Database error occurred",
-      details: error.message,
-    });
-  }
-
-  // Handle connection errors
-  if (error instanceof ConnectionError) {
-    return res.status(503).json({
-      status: false,
-      message: "Database connection error",
-      details: error.message,
-    });
-  }
-
-  // Handle internal errors
-  if (error.httpStatus && error.message) {
-    return res
-      .status(error.httpStatus)
-      .json({ status: false, message: error.message });
-  }
-
-  // ESLINT-disable-next-line no-lonely-if
-  if (typeof error === "string") next(error);
-
-  // Handle generic errors
-  return res.status(500).json({
-    status: false,
-    message: "Internal Server Error",
-    details: env.NODE_ENV === "development" ? error.message : undefined, // Expose details only in development
+  res.status(statusCode).json({
+    success: false,
+    message,
   });
-};
+}

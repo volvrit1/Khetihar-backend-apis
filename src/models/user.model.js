@@ -1,56 +1,57 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
+import { saveFile } from "#utils/uploadFile";
 
-class User extends BaseModel {
-  static genderArr = ["Male", "Female", "Other"];
-}
-
-User.initialize({
+const userSchema = new BaseSchema({
   phone: {
-    type: DataTypes.STRING,
+    type: String,
     unique: true,
-    allowNull: false,
+    required: true,
   },
   aadhaar: {
-    type: DataTypes.STRING(12),
+    type: String,
     unique: true,
-    allowNull: false,
+    required: true,
+    maxlength: 12,
   },
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   district: {
-    type: DataTypes.STRING,
+    type: String,
   },
   state: {
-    type: DataTypes.STRING,
+    type: String,
   },
   country: {
-    type: DataTypes.STRING,
+    type: String,
   },
   age: {
-    type: DataTypes.INTEGER,
+    type: Number,
   },
   gender: {
-    type: DataTypes.ENUM(User.genderArr),
+    type: String,
+    enum: ["Male", "Female", "Other"],
   },
   email: {
-    type: DataTypes.STRING,
+    type: String,
   },
   panNumber: {
-    type: DataTypes.STRING,
+    type: String,
   },
   kisanId: {
-    type: DataTypes.STRING,
+    type: String,
   },
   egannaId: {
-    type: DataTypes.STRING,
+    type: String,
   },
   profile: {
-    type: DataTypes.STRING,
+    type: String,
     file: true,
   },
 });
 
-export default User;
+userSchema.pre("save", saveFile);
+
+export default mongoose.model("User", userSchema);

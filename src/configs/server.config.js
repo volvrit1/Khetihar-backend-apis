@@ -8,17 +8,15 @@ import logger from "#configs/logger";
 import routeMapper from "#routes/index";
 import parser from "#middlewares/parser";
 import { fileURLToPath } from "node:url";
-import sequelize from "#configs/database";
-import { globalErrorHandler } from "#utils/error";
+import connectDb from "#configs/database";
+import globalErrorHandler from "#utils/error";
 import sessionMiddleware from "#middlewares/session";
-
-if (!env.isDev) {
-  await sequelize.sync({ alter: true });
-}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const server = express();
+
+await connectDb(env.DB_URI);
 
 server.use(morgan(logger));
 server.use(cors());

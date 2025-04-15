@@ -7,10 +7,10 @@ export const transactionMethods = ["POST", "PUT", "PATCH", "DELETE"]; // Request
 const sessionMiddleware = (req, _res, next) => {
   session.run(async () => {
     //TODO: transaction has to be implmented
-    if (transactionMethods.includes(req.method)) {
-      const transactionSession = await sequelize.transaction();
-      session.set("transaction", transactionSession);
-    }
+    // if (transactionMethods.includes(req.method)) {
+    //   const transactionSession = await sequelize.transaction();
+    //   session.set("transaction", transactionSession);
+    // }
     session.set("files", req.files ?? null);
     next();
   });

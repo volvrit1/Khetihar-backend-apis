@@ -1,40 +1,35 @@
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 import httpStatus from "http-status";
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
 
-class ContactInquiry extends BaseModel {}
-
-ContactInquiry.initialize({
+const contactInquirySchema = new BaseSchema({
   firstName: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   lastName: {
-    type: DataTypes.STRING,
+    type: String,
   },
   email: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   mobile: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   inquiry: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     validate: {
-      customValidator(value) {
+      validator: function (value) {
         if (typeof value !== "string" || value.length < 3) {
-          throw {
-            status: false,
-            message: "A valid inquiry is required to submit the form",
-            httpStatus: httpStatus.BAD_REQUEST,
-          };
+          throw new Error("A valid inquiry is required to submit the form");
         }
       },
+      message: "A valid inquiry is required to submit the form",
     },
   },
 });
 
-export default ContactInquiry;
+export default mongoose.model("ContactInquiry", contactInquirySchema);

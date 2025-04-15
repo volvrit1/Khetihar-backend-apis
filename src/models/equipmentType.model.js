@@ -1,18 +1,16 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 
-class EquipmentType extends BaseModel {}
-
-EquipmentType.initialize({
+const equipmentTypeSchema = new BaseSchema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
   },
   image: {
-    type: DataTypes.STRING(500),
-    allowNull: false,
+    type: String,
+    required: true,
   },
 });
 
-export default EquipmentType;
+export default mongoose.model("EquipmentType", equipmentTypeSchema);

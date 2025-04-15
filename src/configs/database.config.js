@@ -1,14 +1,13 @@
-import env from "#configs/env";
-import chalk from "chalk";
-import { Sequelize } from "sequelize";
+import mongoose from "mongoose";
 
-const sequelize = new Sequelize(env.DB_NAME, env.DB_USER, env.DB_PASS, {
-  host: env.DB_HOST,
-  dialect: env.DB_DIALECT,
-  logging: console.log ?? false, // Disable logging
-});
+const connectDb = async (DB_URI) => {
+  try {
+    await mongoose.connect(DB_URI);
+    console.log("Connected to database successfully");
+  } catch (err) {
+    console.log(err);
+    process.exit(1);
+  }
+};
 
-await sequelize.authenticate();
-console.log(chalk.magenta("Connected to database"));
-
-export default sequelize;
+export default connectDb;

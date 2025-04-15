@@ -1,53 +1,50 @@
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 import User from "#models/user";
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
 
-class Land extends BaseModel {}
-
-Land.initialize({
+const landSchema = new BaseSchema({
   userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: User.primaryKeyAttribute,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
   name: {
-    type: DataTypes.STRING(1000),
-    allowNull: false,
+    type: String,
+    required: true,
   },
   area: {
-    type: DataTypes.STRING(1000),
-    allowNull: false,
+    type: String,
+    required: true,
   },
   pinCode: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+    type: Number,
+    required: true,
   },
   measuringUnit: {
-    type: DataTypes.ENUM("Bigah", "Biswa"),
-    allowNull: false,
+    type: String,
+    enum: ["Bigah", "Biswa"],
+    required: true,
   },
   khasraNumber: {
-    type: DataTypes.STRING,
+    type: String,
   },
   xLeftCoOrdinate: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   xRightCoOrdinate: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   yTopCoOrdinate: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
-  yBotttomCoOrdinate: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  yBottomCoOrdinate: {
+    type: String,
+    required: true,
   },
 });
 
-export default Land;
+export default mongoose.model("Land", landSchema);
+

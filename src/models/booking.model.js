@@ -1,60 +1,49 @@
-import Land from "#models/land";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 import User from "#models/user";
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
-import Cart from "#models/cart";
+import Land from "#models/land";
+import Agent from "#models/agent";
+import Equipment from "#models/equipment"
 
-class Booking extends BaseModel {
-  static status = ["Pending", "Cancelled", "In-Progress", "Completed"];
-}
-
-Booking.initialize({
+const bookingSchema = new BaseSchema({
   userId: {
-    type: DataTypes.INTEGER,
-    alloNull: false,
-    references: {
-      model: User,
-      key: User.primaryKeyAttribute,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: User,
   },
   landId: {
-    type: DataTypes.INTEGER,
-    alloNull: false,
-    references: {
-      model: Land,
-      key: Land.primaryKeyAttribute,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: Land,
   },
   agentId: {
-    type: DataTypes.INTEGER,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: Agent,
   },
   bookingDate: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
+    type: Date,
+    required: true,
   },
   equipmentId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: Equipment,
   },
   bookingStatus: {
-    type: DataTypes.ENUM(Booking.status),
-    defaultValue: "Pending",
-  },
-  cartId: {
-    type: DataTypes.INTEGER,
-    references: {
-      model: Cart,
-      key: Cart.primaryKeyAttribute,
-    },
+    type: String,
+    enum: ["Pending", "Cancelled", "In-Progress", "Completed"],
+    default: "Pending",
   },
   slot: {
-    type: DataTypes.TEXT,
+    type: String,
   },
 });
 
-Cart.hasMany(Booking, {
-  foreignKey: "cartId",
-  as: "bookings",
-});
+bookingSchema.statics.status = [
+  "Pending",
+  "Cancelled",
+  "In-Progress",
+  "Completed",
+];
 
-export default Booking;
+export default mongoose.model("Booking", bookingSchema);

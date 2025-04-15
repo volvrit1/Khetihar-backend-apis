@@ -8,9 +8,9 @@ class Service {
 
   static async get(id, filters = {}) {
     if (!id) {
-      return await this.Model.find(filters);
+      return await this.Model.findAll(filters);
     }
-    return await this.Model.findById(id);
+    return await this.Model.findDocById(id);
   }
 
   static async getDoc(filters, allowNull = false) {
@@ -24,15 +24,15 @@ class Service {
   }
 
   static async update(id, updates) {
-    const document = await this.Model.findById(id);
+    const document = await this.Model.findDocById(id);
     document.updateFields(updates);
     await document.save();
     return document;
   }
 
   static async deleteDoc(id) {
-    const document = await this.Model.findById(id);
-    await document.destroy({ force: true });
+    const document = await this.Model.findDocById(id);
+    await document.deleteOne();
   }
 }
 

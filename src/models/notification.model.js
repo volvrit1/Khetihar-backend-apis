@@ -1,22 +1,18 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 import User from "#models/user";
 
-class Notification extends BaseModel {}
-
-Notification.initialize({
+const notificationSchema = new BaseSchema({
   userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: User,
-      key: User.primaryKeyAttribute,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
   },
   notification: {
-    type: DataTypes.STRING(500),
-    allowNull: false,
+    type: String,
+    required: true,
+    maxlength: 500,
   },
 });
 
-export default Notification;
+export default mongoose.model("Notification", notificationSchema);

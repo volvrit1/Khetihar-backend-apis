@@ -1,6 +1,5 @@
 import Service from "#services/base";
 import User from "#models/user";
-import CartService from "#services/cart";
 import OtpService from "#services/otp";
 import { createToken } from "#utils/jwt";
 import httpStatus from "http-status";
@@ -8,24 +7,16 @@ import httpStatus from "http-status";
 class UserService extends Service {
   static Model = User;
 
-  static async create(userData) {
-    const user = await super.create(userData);
-    const { id: userId } = user;
-
-    await CartService.create({ userId });
-    return user;
-  }
-
   static async login(otpData) {
-    const { mobile, otp } = otpData;
+    const { phone, otp } = otpData;
 
     let user = await this.Model.findDoc({
-      mobile,
+      phone,
     });
 
     const savedOtp = await OtpService.getDoc(
       {
-        mobile,
+        phone,
         type: "User",
       },
       true,
@@ -64,15 +55,17 @@ class UserService extends Service {
   }
 
   static async sendOtp(loginData) {
-    const { mobile } = loginData;
+    const { phone } = loginData;
 
     const user = await this.getDoc({
-      mobile,
+      phone,
     });
+
+    console.log(phone);
 
     let otp = await OtpService.getDoc(
       {
-        mobile,
+        phone,
         type: "User",
       },
       true,
@@ -80,7 +73,7 @@ class UserService extends Service {
 
     if (!otp) {
       otp = await OtpService.create({
-        mobile,
+        phone,
         type: "User",
         otp: Math.floor(1000 + Math.random() * 9000),
       });

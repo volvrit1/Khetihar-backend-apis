@@ -1,32 +1,37 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
+import { saveFile } from "#utils/uploadFile";
 
-class Agent extends BaseModel {}
-
-Agent.initialize({
+const agentSchema = new BaseSchema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   phone: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   aadhaarNumber: {
-    type: DataTypes.STRING,
+    type: String,
   },
   panNumber: {
-    type: DataTypes.STRING,
+    type: String,
   },
   email: {
-    type: DataTypes.STRING,
+    type: String,
   },
   accountNumber: {
-    type: DataTypes.STRING,
+    type: String,
   },
   ifscCode: {
-    type: DataTypes.STRING,
+    type: String,
+  },
+  photo: {
+    type: String,
+    file: true,
   },
 });
 
-export default Agent;
+agentSchema.pre("save", saveFile);
+
+export default mongoose.model("Agent", agentSchema);

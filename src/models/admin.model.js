@@ -1,22 +1,20 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
 
-class Admin extends BaseModel {}
-
-Admin.initialize({
+const adminSchema = new BaseSchema({
   email: {
-    type: DataTypes.STRING,
+    type: String,
     required: true,
     unique: true,
   },
   password: {
-    type: DataTypes.STRING,
+    type: String,
     required: true,
   },
   name: {
-    type: DataTypes.STRING,
+    type: String,
     required: true,
   },
 });
 
-export default Admin;
+export default mongoose.model("Admin", adminSchema);

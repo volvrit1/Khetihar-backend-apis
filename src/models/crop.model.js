@@ -1,22 +1,23 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
+import { saveFile } from "#utils/uploadFile";
 
-class Crop extends BaseModel {}
-
-Crop.initialize({
+const cropSchema = new BaseSchema({
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
     unique: true,
   },
   image: {
-    type: DataTypes.STRING(500),
+    type: String,
     file: true,
   },
   active: {
-    type: DataTypes.BOOLEAN,
+    type: Boolean,
     default: false,
   },
 });
 
-export default Crop;
+cropSchema.pre("save", saveFile);
+
+export default mongoose.model("Crop", cropSchema);

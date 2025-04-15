@@ -1,34 +1,32 @@
-import BaseModel from "#models/base";
-import { DataTypes } from "sequelize";
+import mongoose from "mongoose";
+import BaseSchema from "#models/base";
+import { saveFile } from "#utils/uploadFile";
 import EquipmentType from "#models/equipmentType";
 
-class Equipment extends BaseModel {}
-
-Equipment.initialize({
+const equipmentSchema = new BaseSchema({
   equipmentTypeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: EquipmentType,
-      key: Equipment.primaryKeyAttribute,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "EquipmentType",
   },
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   description: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
   image: {
-    type: DataTypes.STRING(500),
+    type: String,
     file: true,
   },
   cost: {
-    type: DataTypes.STRING,
-    allowNull: false,
+    type: String,
+    required: true,
   },
 });
 
-export default Equipment;
+equipmentSchema.pre("save", saveFile);
+
+export default mongoose.model("Equipment", equipmentSchema);

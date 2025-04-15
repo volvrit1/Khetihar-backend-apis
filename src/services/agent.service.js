@@ -1,6 +1,5 @@
 import Service from "#services/base";
 import Agent from "#models/agent";
-import CartService from "#services/cart";
 import OtpService from "#services/otp";
 import { createToken } from "#utils/jwt";
 import httpStatus from "http-status";
