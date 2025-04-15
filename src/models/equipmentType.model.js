@@ -1,3 +1,4 @@
+import { saveFile } from "#utils/uploadFile";
 import mongoose from "mongoose";
 import BaseSchema from "#models/base";
 
@@ -9,8 +10,10 @@ const equipmentTypeSchema = new BaseSchema({
   },
   image: {
     type: String,
-    required: true,
+    file: true,
   },
 });
+
+equipmentTypeSchema.pre("save", saveFile);
 
 export default mongoose.model("EquipmentType", equipmentTypeSchema);

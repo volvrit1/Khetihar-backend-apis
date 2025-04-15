@@ -35,7 +35,7 @@ class AgentService extends Service {
       };
     }
 
-    await savedOtp.destroy({ force: true });
+    await savedOtp.deleteOne();
 
     const payload = {
       ...agent.toJSON(),

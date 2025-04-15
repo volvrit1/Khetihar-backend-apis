@@ -2,8 +2,10 @@ class Service {
   static Model = null;
 
   static async create(data) {
-    const createdData = await this.Model.create(data);
-    return createdData;
+    delete data.deletedAt;
+    const doc = new this.Model(data);
+    await doc.save();
+    return doc;
   }
 
   static async get(id, filters = {}) {
@@ -13,26 +15,29 @@ class Service {
     return await this.Model.findDocById(id);
   }
 
-  static async getDoc(filters, allowNull = false) {
-    const data = await this.Model.findDoc(filters, allowNull);
-    return data;
+  static async getDocById(id, allowNull = false) {
+    return await this.Model.findDocById(id, allowNull);
   }
 
-  static async getWithQuery(query) {
-    const data = await this.Model.sequelize.query(query);
-    return data;
+  static async getDoc(filter = {}, allowNull = false) {
+    return await this.Model.findDoc(filter, allowNull);
+  }
+
+  static async getWithAggregate(pipeline = []) {
+    return await this.Model.aggregate(pipeline);
   }
 
   static async update(id, updates) {
-    const document = await this.Model.findDocById(id);
-    document.updateFields(updates);
-    await document.save();
-    return document;
+    const doc = await this.Model.findDocById(id);
+    doc.update(updates);
+    await doc.save();
+    return doc;
   }
 
   static async deleteDoc(id) {
-    const document = await this.Model.findDocById(id);
-    await document.deleteOne();
+    const doc = await this.Model.findDocById(id);
+    await doc.deleteOne();
+    return doc;
   }
 }
 

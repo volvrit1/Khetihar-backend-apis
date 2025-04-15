@@ -7,7 +7,7 @@ const equipmentSchema = new BaseSchema({
   equipmentTypeId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "EquipmentType",
+    ref: EquipmentType,
   },
   name: {
     type: String,

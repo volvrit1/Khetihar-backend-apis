@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import BaseSchema from "#models/base";
 
 const otpSchema = new BaseSchema({
-  mobile: {
+  phone: {
     type: String,
     unique: true,
     required: false,

@@ -1,7 +1,5 @@
 import express from "express";
-import Admin from "#models/admin";
 import authentication from "#middlewares/authentication";
-import joiValidator from "#middlewares/joi";
 import asyncHandler from "#utils/asyncHandler";
 import AdminController from "#controllers/admin";
 
@@ -21,14 +19,8 @@ router
 router
   .route("/:id?")
   .get(asyncHandler(AdminController.get.bind(AdminController)))
-  .post(
-    joiValidator(Admin),
-    asyncHandler(AdminController.create.bind(AdminController)),
-  )
-  .put(
-    joiValidator(Admin, true),
-    asyncHandler(AdminController.update.bind(AdminController)),
-  )
+  .post(asyncHandler(AdminController.create.bind(AdminController)))
+  .put(asyncHandler(AdminController.update.bind(AdminController)))
   .delete(asyncHandler(AdminController.deleteDoc.bind(AdminController)));
 
 export default router;

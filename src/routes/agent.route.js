@@ -17,14 +17,8 @@ router
 router
   .route("/:id?")
   .get(asyncHandler(AgentController.get.bind(AgentController)))
-  .post(
-    joiValidator(Agent),
-    asyncHandler(AgentController.create.bind(AgentController)),
-  )
-  .put(
-    joiValidator(Agent, true),
-    asyncHandler(AgentController.update.bind(AgentController)),
-  )
+  .post(asyncHandler(AgentController.create.bind(AgentController)))
+  .put(asyncHandler(AgentController.update.bind(AgentController)))
   .delete(asyncHandler(AgentController.deleteDoc.bind(AgentController)));
 
 export default router;

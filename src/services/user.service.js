@@ -38,7 +38,7 @@ class UserService extends Service {
       };
     }
 
-    await savedOtp.destroy({ force: true });
+    await savedOtp.deleteOne();
 
     const payload = {
       ...user.toJSON(),
@@ -60,8 +60,6 @@ class UserService extends Service {
     const user = await this.getDoc({
       phone,
     });
-
-    console.log(phone);
 
     let otp = await OtpService.getDoc(
       {

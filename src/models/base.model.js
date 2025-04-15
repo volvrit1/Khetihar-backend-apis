@@ -7,10 +7,6 @@ class BaseSchema extends Schema {
     super(
       {
         ...schemaDefinition,
-        deletedAt: {
-          type: Date,
-          default: null,
-        },
       },
       {
         timestamps: true,

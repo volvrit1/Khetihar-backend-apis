@@ -11,7 +11,7 @@ class Controller {
       httpStatus.OK,
       res,
       data,
-      `${this.Service.Model.name} fetched successfully`,
+      `${this.Service.Model.updatedName()} fetched successfully`,
     );
   }
 
@@ -21,10 +21,9 @@ class Controller {
       httpStatus.CREATED,
       res,
       data,
-      `${this.Service.Model.name} created successfully`,
+      `${this.Service.Model.updatedName()} created successfully`,
     );
   }
-
   static async update(req, res, next) {
     const { id } = req.params;
     const data = await this.Service.update(id, req.body);
@@ -32,7 +31,7 @@ class Controller {
       httpStatus.OK,
       res,
       data,
-      `${this.Service.Model.name} updated successfully`,
+      `${this.Service.Model.updatedName()} updated successfully`,
     );
   }
 
@@ -43,7 +42,7 @@ class Controller {
       httpStatus.OK,
       res,
       data,
-      `${this.Service.Model.name} deleted successfully`,
+      `${this.Service.Model.updatedName()} deleted successfully`,
     );
   }
 }

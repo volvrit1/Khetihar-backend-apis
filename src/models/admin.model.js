@@ -13,7 +13,6 @@ const adminSchema = new BaseSchema({
   },
   name: {
     type: String,
-    required: true,
   },
 });
 

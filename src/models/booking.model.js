@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import BaseSchema from "#models/base";
 import User from "#models/user";
 import Land from "#models/land";
 import Agent from "#models/agent";
-import Equipment from "#models/equipment"
+import BaseSchema from "#models/base";
+import Equipment from "#models/equipment";
 
 const bookingSchema = new BaseSchema({
   userId: {
@@ -36,6 +36,10 @@ const bookingSchema = new BaseSchema({
   },
   slot: {
     type: String,
+  },
+  cost: {
+    type: Number,
+    required: true,
   },
 });
 

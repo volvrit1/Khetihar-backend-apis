@@ -19,6 +19,7 @@ class UserController extends Controller {
   }
 
   static async sendOtp(req, res, next) {
+    console.log(req.body);
     const otpData = await this.Service.sendOtp(req.body);
     sendResponse(httpStatus.OK, res, otpData, "Otp sent successfully");
   }
