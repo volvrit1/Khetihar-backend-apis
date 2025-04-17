@@ -9,14 +9,8 @@ const router = express.Router();
 router
   .route("/:id?")
   .get(asyncHandler(BookingController.get.bind(BookingController)))
-  .post(
-    joiValidator(Booking),
-    asyncHandler(BookingController.create.bind(BookingController)),
-  )
-  .put(
-    joiValidator(Booking, true),
-    asyncHandler(BookingController.update.bind(BookingController)),
-  )
+  .post(asyncHandler(BookingController.create.bind(BookingController)))
+  .put(asyncHandler(BookingController.update.bind(BookingController)))
   .delete(asyncHandler(BookingController.deleteDoc.bind(BookingController)));
 
 export default router;

@@ -54,6 +54,20 @@ class UserService extends Service {
     return user;
   }
 
+  static async getPublic() {
+    const data = await this.Model.aggregate([
+      {
+        $project: {
+          id: 1,
+          name: 1,
+          email: 1,
+        },
+      },
+    ]);
+
+    return data;
+  }
+
   static async sendOtp(loginData) {
     const { phone } = loginData;
 

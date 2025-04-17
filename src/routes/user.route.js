@@ -13,6 +13,10 @@ router
   .post(asyncHandler(UserController.sendOtp.bind(UserController)));
 
 router
+  .route("/public")
+  .get(asyncHandler(UserController.getPublic.bind(UserController)));
+
+router
   .route("/:id?")
   .get(asyncHandler(UserController.get.bind(UserController)))
   .post(

@@ -12,9 +12,6 @@ const appServiceSchema = new BaseSchema({
     type: String,
     file: true,
   },
-  description: {
-    type: String,
-  },
 });
 
 appServiceSchema.pre("save", saveFile);

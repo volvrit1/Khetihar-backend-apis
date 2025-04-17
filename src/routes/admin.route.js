@@ -17,6 +17,15 @@ router
   );
 
 router
+  .route("/booking/:id?")
+  .get(asyncHandler(AdminController.getBooking.bind(AdminController)))
+  .put(asyncHandler(AdminController.updateBooking.bind(AdminController)));
+
+router
+  .route("/land/:id?")
+  .get(asyncHandler(AdminController.getLand.bind(AdminController)));
+
+router
   .route("/:id?")
   .get(asyncHandler(AdminController.get.bind(AdminController)))
   .post(asyncHandler(AdminController.create.bind(AdminController)))

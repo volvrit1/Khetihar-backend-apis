@@ -6,14 +6,14 @@ const landSchema = new BaseSchema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: User,
   },
   name: {
     type: String,
     required: true,
   },
   area: {
-    type: String,
+    type: Number,
     required: true,
   },
   pinCode: {
@@ -22,29 +22,20 @@ const landSchema = new BaseSchema({
   },
   measuringUnit: {
     type: String,
-    enum: ["Bigah", "Biswa"],
     required: true,
   },
   khasraNumber: {
     type: String,
   },
-  xLeftCoOrdinate: {
-    type: String,
+  coOrdinates: {
+    type: Array,
     required: true,
   },
-  xRightCoOrdinate: {
-    type: String,
+  cost: {
+    type: Number,
     required: true,
-  },
-  yTopCoOrdinate: {
-    type: String,
-    required: true,
-  },
-  yBottomCoOrdinate: {
-    type: String,
-    required: true,
+    default: 0,
   },
 });
 
 export default mongoose.model("Land", landSchema);
-

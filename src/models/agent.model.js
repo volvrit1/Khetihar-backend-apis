@@ -10,6 +10,7 @@ const agentSchema = new BaseSchema({
   phone: {
     type: String,
     required: true,
+    unique: true,
   },
   aadhaarNumber: {
     type: String,
@@ -19,6 +20,7 @@ const agentSchema = new BaseSchema({
   },
   email: {
     type: String,
+    unique: true,
   },
   accountNumber: {
     type: String,

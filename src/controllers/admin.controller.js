@@ -13,9 +13,26 @@ class AdminController extends Controller {
   }
 
   static async getCurrentUser(req, res, next) {
-    console.log(session.get("userId"));
     const admin = await this.Service.get(session.get("userId"));
     sendResponse(httpStatus.OK, res, admin, "Record fetched successfully");
+  }
+
+  static async getBooking(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.getBooking(id, req.query);
+    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+  }
+
+  static async getLand(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.getLand(id, req.query);
+    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+  }
+
+  static async updateBooking(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.updateBooking(id, req.body);
+    sendResponse(httpStatus.OK, res, data, "Boolking updated successfully");
   }
 }
 
