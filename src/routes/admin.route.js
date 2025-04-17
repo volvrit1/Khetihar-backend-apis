@@ -13,13 +13,25 @@ router
   .route("/get-current-user")
   .get(
     authentication,
-    asyncHandler(AdminController.getCurrentUser.bind(AdminController)),
+    asyncHandler(AdminController.getCurrentUser.bind(AdminController))
   );
 
 router
   .route("/booking/:id?")
   .get(asyncHandler(AdminController.getBooking.bind(AdminController)))
   .put(asyncHandler(AdminController.updateBooking.bind(AdminController)));
+
+router
+  .route("/dashboard")
+  .get(asyncHandler(AdminController.getDashboard.bind(AdminController)));
+
+router
+  .route("/dashboard/graph")
+  .get(asyncHandler(AdminController.getDashboardGraph.bind(AdminController)));
+
+router
+  .route("/dashboard/session")
+  .get(asyncHandler(AdminController.getDashboardSession.bind(AdminController)));
 
 router
   .route("/land/:id?")

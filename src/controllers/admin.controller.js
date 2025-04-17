@@ -23,6 +23,24 @@ class AdminController extends Controller {
     sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
   }
 
+  static async getDashboard(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.getDashboardData(id, req.query);
+    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+  }
+
+  static async getDashboardGraph(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.getDashboardGraph(id, req.query);
+    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+  }
+
+  static async getDashboardSession(req, res, next) {
+    const { id } = req.params;
+    const data = await this.Service.getDashboardSession(id, req.query);
+    sendResponse(httpStatus.OK, res, data, "Record fetched successfully");
+  }
+
   static async getLand(req, res, next) {
     const { id } = req.params;
     const data = await this.Service.getLand(id, req.query);

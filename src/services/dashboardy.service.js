@@ -1,5 +1,5 @@
-import AgentService from "#services/agent";
 import UserService from "#services/user";
+import AgentService from "#services/agent";
 import BookingService from "#services/booking";
 
 class DashboardService {
@@ -13,7 +13,7 @@ class DashboardService {
       users,
       bookings,
     ]);
-
-
   }
 }
+
+export default DashboardService;
