@@ -356,6 +356,7 @@ class AdminService extends Service {
         }
 
         slot.agents[agentIndex] = new mongoose.Types.ObjectId(data.agentId);
+        await slot.save();
       }
     } else if (data.agentId) {
       const slot = await SlotService.getDocById(booking.slotId.toString());
