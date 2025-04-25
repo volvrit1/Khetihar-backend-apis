@@ -125,7 +125,8 @@ class AdminService extends Service {
         .populate("landId")
         .populate("agentId") // This will be null if not assigned
         .populate("equipmentId")
-        .populate("cropId");
+        .populate("cropId")
+        .populate("slotId");
 
       if (!booking) {
         throw {
