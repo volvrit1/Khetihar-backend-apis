@@ -338,7 +338,10 @@ class AdminService extends Service {
     const booking = await Model.findDocById(id);
 
     if (booking.agentId) {
-      if ("agentId" in data && booking.agentId !== data.agentId) {
+      if (
+        "agentId" in data &&
+        booking.agentId !== new mongoose.Types.ObjectId(data.agentId)
+      ) {
         const slot = await SlotService.getDocById(booking.slotId);
 
         const agentIndex = slot.agents.indexOf(booking.agentId);
@@ -351,7 +354,7 @@ class AdminService extends Service {
           };
         }
 
-        slot.agents[agentIndex] = data.agentId;
+        slot.agents[agentIndex] = new data.agentId();
       }
     } else if (data.agentId) {
       const slot = await SlotService.getDocById(booking.slotId);
@@ -364,7 +367,7 @@ class AdminService extends Service {
         };
       }
 
-      slot.agents.push(data.agentId);
+      slot.agents.push(new mongoose.Types.ObjectId(data.agentId));
       await slot.save();
     }
 
