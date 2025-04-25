@@ -22,6 +22,12 @@ class AgentController extends Controller {
     const otpData = await this.Service.sendOtp(req.body);
     sendResponse(httpStatus.OK, res, otpData, "Otp sent successfully");
   }
+
+  static async getAvailableAgent(req, res, next) {
+    const { slotId } = req.params;
+    const data = await this.Service.getAvailableAgent(slotId);
+    sendResponse(httpStatus.OK, res, data, "Agents fetched successfully");
+  }
 }
 
 export default AgentController;

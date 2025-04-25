@@ -15,6 +15,10 @@ router
   .post(asyncHandler(AgentController.sendOtp.bind(AgentController)));
 
 router
+  .route("/available/:slotId")
+  .get(asyncHandler(AgentController.getAvailableAgent.bind(AgentController)));
+
+router
   .route("/:id?")
   .get(asyncHandler(AgentController.get.bind(AgentController)))
   .post(asyncHandler(AgentController.create.bind(AgentController)))

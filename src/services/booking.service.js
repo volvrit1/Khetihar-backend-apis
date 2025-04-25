@@ -38,6 +38,14 @@ class BookingService extends Service {
           foreignField: "_id",
         },
       },
+      {
+        $lookup: {
+          from: "slots",
+          as: "slotData",
+          localField: "slotId",
+          foreignField: "_id",
+        },
+      },
     ];
 
     const extraStage = [

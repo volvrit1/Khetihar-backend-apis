@@ -3,6 +3,7 @@ import Agent from "#models/agent";
 import OtpService from "#services/otp";
 import { createToken } from "#utils/jwt";
 import httpStatus from "http-status";
+import SlotService from "#services/slot";
 
 class AgentService extends Service {
   static Model = Agent;
@@ -49,6 +50,29 @@ class AgentService extends Service {
     agent.token = token;
 
     return agent;
+  }
+
+  static async getAvailableAgent(slotId) {
+    const slot = await SlotService.getDoc(slotId);
+
+    // Defensive check to avoid `$nin: undefined` if slot.agents is missing
+    const excludedAgentIds = Array.isArray(slot.agents) ? slot.agents : [];
+
+    const agents = await this.Model.aggregate([
+      {
+        $match: {
+          _id: { $nin: excludedAgentIds },
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+        },
+      },
+    ]);
+
+    return agents;
   }
 
   static async sendOtp(loginData) {
