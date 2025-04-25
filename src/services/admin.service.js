@@ -3,6 +3,7 @@ import Service from "#services/base";
 import httpStatus from "http-status";
 import { createToken } from "#utils/jwt";
 import { compare, hash } from "bcryptjs";
+import SlotService from "#services/slot";
 import LandService from "#services/land";
 import UserService from "#services/user";
 import BookingService from "#services/booking";
@@ -178,10 +179,10 @@ class AdminService extends Service {
 
     const allTimeBooking = await aggregateBooking({ paymentStatus: true });
     const currentTimeBooking = await aggregateBooking(
-      matchPendingBookings(startDate, endDate)
+      matchPendingBookings(startDate, endDate),
     );
     const prevbTimeBooking = await aggregateBooking(
-      matchPendingBookings(prevStartDate, prevEndDate)
+      matchPendingBookings(prevStartDate, prevEndDate),
     );
     const currentBookings = await BookingModal.aggregate([
       { $match: matchPendingBookings(startDate, endDate) },
@@ -197,7 +198,7 @@ class AdminService extends Service {
     const percentageChangeInRevenue = change(currentRevenue, previousRevenue);
     const percentageChangeInBookings = change(
       currentBookings,
-      previousBookings
+      previousBookings,
     );
 
     const userStats = {
@@ -241,7 +242,7 @@ class AdminService extends Service {
 
         labels = Array.from(
           { length: totalDays },
-          (_, i) => `${i + 1}${ordinalSuffix(i + 1)}`
+          (_, i) => `${i + 1}${ordinalSuffix(i + 1)}`,
         );
         labels.forEach((label) => (dataMap[label] = 0));
         break;
@@ -335,6 +336,38 @@ class AdminService extends Service {
     const Model = BookingService.Model;
 
     const booking = await Model.findDocById(id);
+
+    if (booking.agentId) {
+      if ("agentId" in data && booking.agentId !== data.agentId) {
+        const slot = await SlotService.getDocById(booking.slotId);
+
+        const agentIndex = slot.agents.indexOf(booking.agentId);
+
+        if (agentIndex === -1) {
+          throw {
+            status: false,
+            message: `Internal Error - Wrong agent assignation in booking with id ${id}`,
+            httpStatus: httpStatus.INTERNAL_SERVER_ERROR,
+          };
+        }
+
+        slot.agents[agentIndex] = data.agentId;
+      }
+    } else if (data.agentId) {
+      const slot = await SlotService.getDocById(booking.slotId);
+      if (slot.agents.includes(data.agentId)) {
+        throw {
+          status: false,
+          message:
+            "Agent is already assigned to another booking in the desired slot",
+          httpStatus: httpStatus.BAD_REQUEST,
+        };
+      }
+
+      slot.agents.push(data.agentId);
+      await slot.save();
+    }
+
     booking.update(data);
     await booking.save();
     return booking;

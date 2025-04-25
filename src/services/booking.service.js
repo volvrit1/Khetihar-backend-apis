@@ -1,5 +1,7 @@
+import httpStatus from "http-status";
 import Service from "#services/base";
 import Booking from "#models/booking";
+import SlotService from "#services/slot";
 
 class BookingService extends Service {
   static Model = Booking;
