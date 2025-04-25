@@ -59,6 +59,9 @@ class BookingService extends Service {
       },
     ];
 
+    if (id) {
+    }
+
     const data = await this.Model.findAll(filters, initialStage, extraStage);
     return data;
   }

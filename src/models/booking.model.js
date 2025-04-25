@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import User from "#models/user";
+import Slot from "#models/slot";
 import Crop from "#models/crop";
 import Land from "#models/land";
 import Agent from "#models/agent";
@@ -40,8 +41,10 @@ const bookingSchema = new BaseSchema({
     enum: ["Pending", "Cancelled", "In-Progress", "Completed"],
     default: "Pending",
   },
-  slot: {
-    type: String,
+  slotId: {
+    type: BaseSchema.Types.ObjectId,
+    ref: Slot,
+    required: true,
   },
   cost: {
     type: Number,
