@@ -352,7 +352,7 @@ class AdminService extends Service {
           };
         }
 
-        slot.agents[agentIndex] = new data.agentId();
+        slot.agents[agentIndex] = data.agentId;
       }
     } else if (data.agentId) {
       const slot = await SlotService.getDocById(booking.slotId);
