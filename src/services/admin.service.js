@@ -1,5 +1,6 @@
 import Admin from "#models/admin";
 import Service from "#services/base";
+import mongoose from "mongoose";
 import httpStatus from "http-status";
 import { createToken } from "#utils/jwt";
 import { compare, hash } from "bcryptjs";
