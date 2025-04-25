@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const slotSchema = new BaseSchema({
   date: {
-    type: Date,
+    type: String,
     required: true,
   },
   startTime: {
