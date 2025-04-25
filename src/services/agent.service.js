@@ -53,7 +53,7 @@ class AgentService extends Service {
   }
 
   static async getAvailableAgent(slotId) {
-    const slot = await SlotService.getDoc(slotId);
+    const slot = await SlotService.getDocById(slotId);
 
     // Defensive check to avoid `$nin: undefined` if slot.agents is missing
     const excludedAgentIds = Array.isArray(slot.agents) ? slot.agents : [];
